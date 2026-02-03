@@ -1,0 +1,266 @@
+import * as React from "react"
+import { motion } from "framer-motion"
+
+type Service = {
+  id: string
+  title: string
+  kicker: string
+  description: string
+  deliverables: string[]
+  impact: {
+    reservas: number
+    marca: number
+    ventas: number
+  }
+}
+
+const SERVICES: Service[] = [
+  {
+    id: "strategy",
+    kicker: "Strategy",
+    title: "Estrategia digital",
+    description:
+      "Analizamos tu negocio, tu público y tu competencia para crear una estrategia clara. Sin humo: objetivos reales, acciones concretas y métricas claras.",
+    deliverables: ["Auditoría digital", "Definición de objetivos", "Plan mensual de acciones", "Roadmap de crecimiento"],
+    impact: { reservas: 3, marca: 4, ventas: 4 },
+  },
+  {
+    id: "branding",
+    kicker: "Brand",
+    title: "Branding & identidad",
+    description:
+      "Creamos marcas que se sienten premium y coherentes. Una identidad que conecta con tu público y eleva la percepción de tu local.",
+    deliverables: ["Identidad visual", "Dirección creativa", "Diseño de feed", "Guía de marca"],
+    impact: { reservas: 2, marca: 5, ventas: 3 },
+  },
+  {
+    id: "content",
+    kicker: "Content",
+    title: "Contenido que convierte",
+    description:
+      "Reels, fotografía y UGC pensados para captar atención y generar acción. No hacemos contenido bonito: hacemos contenido que funciona.",
+    deliverables: ["Producción de Reels", "Fotografía profesional", "UGC", "Guiones y hooks"],
+    impact: { reservas: 4, marca: 4, ventas: 3 },
+  },
+  {
+    id: "social",
+    kicker: "Social",
+    title: "Social Media Management",
+    description:
+      "Gestionamos tus redes con una estrategia clara, constancia y foco en resultados. Publicar por publicar no sirve.",
+    deliverables: ["Planificación mensual", "Publicación y copywriting", "Gestión de comunidad", "Optimización de perfil"],
+    impact: { reservas: 3, marca: 4, ventas: 3 },
+  },
+  {
+    id: "ads",
+    kicker: "Ads",
+    title: "Paid Ads (Meta & TikTok)",
+    description:
+      "Campañas orientadas a reservas, tráfico y ventas. Medimos cada euro invertido y optimizamos semanalmente.",
+    deliverables: ["Configuración de campañas", "Creatividades publicitarias", "Optimización semanal", "Reportes claros"],
+    impact: { reservas: 5, marca: 3, ventas: 5 },
+  },
+  {
+    id: "influencers",
+    kicker: "Influencers",
+    title: "Influencers & activaciones",
+    description:
+      "Colaboraciones estratégicas con creadores alineados con tu marca. Activaciones reales, no postureo.",
+    deliverables: ["Selección de perfiles", "Gestión de colaboraciones", "Eventos y activaciones", "Contenido amplificado"],
+    impact: { reservas: 4, marca: 4, ventas: 3 },
+  },
+  {
+    id: "web",
+    kicker: "Web",
+    title: "Web & landing pages",
+    description:
+      "Webs rápidas, claras y enfocadas a conversión. Diseñadas para que el usuario reserve, compre o contacte.",
+    deliverables: ["Diseño UX/UI", "Desarrollo web", "Landings de campaña", "Optimización SEO básica"],
+    impact: { reservas: 4, marca: 3, ventas: 4 },
+  },
+  {
+    id: "analytics",
+    kicker: "Data",
+    title: "Analítica & optimización",
+    description: "Medimos, analizamos y optimizamos. Sin datos no hay crecimiento sostenible.",
+    deliverables: ["Configuración de métricas", "Dashboards", "Análisis mensual", "Optimización continua"],
+    impact: { reservas: 3, marca: 2, ventas: 5 },
+  },
+]
+
+function ImpactBar({
+  label,
+  value,
+  accent,
+}: {
+  label: string
+  value: number
+  accent: string
+}) {
+  return (
+    <div style={{ marginBottom: 10 }}>
+      <div style={{ fontSize: 12, opacity: 0.7, marginBottom: 4 }}>{label}</div>
+      <div
+        style={{
+          height: 6,
+          borderRadius: 999,
+          background: "rgba(255,255,255,0.12)",
+          overflow: "hidden",
+        }}
+      >
+        <div
+          style={{
+            width: `${value * 20}%`,
+            height: "100%",
+            background: accent,
+            opacity: 0.9,
+            borderRadius: 999,
+          }}
+        />
+      </div>
+    </div>
+  )
+}
+
+export type LastAgencyServicesProps = {
+  accent?: string
+  className?: string
+  style?: React.CSSProperties
+}
+
+export default function LastAgencyServices({
+  accent = "#00D7FF",
+  className,
+  style,
+}: LastAgencyServicesProps) {
+  const [active, setActive] = React.useState<Service>(SERVICES[0])
+  const [isMobile, setIsMobile] = React.useState(false)
+
+  React.useEffect(() => {
+    if (typeof window === "undefined") return
+    const onResize = () => setIsMobile(window.innerWidth < 980)
+    onResize()
+    window.addEventListener("resize", onResize)
+    return () => window.removeEventListener("resize", onResize)
+  }, [])
+
+  return (
+    <section
+      className={className}
+      style={{
+        background: "#050607",
+        color: "rgba(255,255,255,0.92)",
+        padding: isMobile ? "84px 22px" : "120px 72px",
+        display: "grid",
+        gridTemplateColumns: isMobile ? "1fr" : "1.2fr 2fr",
+        gap: isMobile ? 22 : 48,
+        fontFamily: "ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial",
+        ...style,
+      }}
+    >
+      {/* LEFT */}
+      <div>
+        <div
+          style={{
+            fontSize: isMobile ? 44 : 64,
+            lineHeight: 0.95,
+            fontWeight: 800,
+            letterSpacing: "-0.04em",
+          }}
+        >
+          Servicios{" "}
+          <span style={{ fontFamily: "serif", fontStyle: "italic" }}>
+            inconformistas
+          </span>
+        </div>
+
+        <div style={{ marginTop: 32 }}>
+          {SERVICES.map((s) => {
+            const isActive = active.id === s.id
+            return (
+              <div
+                key={s.id}
+                onClick={() => setActive(s)}
+                style={{
+                  padding: "14px 0",
+                  cursor: "pointer",
+                  opacity: isActive ? 1 : 0.55,
+                  fontWeight: isActive ? 700 : 500,
+                  borderBottom: "1px solid rgba(255,255,255,0.08)",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  gap: 12,
+                }}
+              >
+                <span>{s.title}</span>
+                <span
+                  style={{
+                    width: 8,
+                    height: 8,
+                    borderRadius: 99,
+                    background: isActive ? accent : "rgba(255,255,255,0.18)",
+                    boxShadow: isActive ? `0 0 0 6px ${accent}1f` : "none",
+                    flex: "0 0 auto",
+                  }}
+                />
+              </div>
+            )
+          })}
+        </div>
+      </div>
+
+      {/* RIGHT */}
+      <motion.div
+        key={active.id}
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.35 }}
+        style={{
+          background: "rgba(255,255,255,0.06)",
+          border: "1px solid rgba(255,255,255,0.10)",
+          borderRadius: 24,
+          padding: isMobile ? 22 : 32,
+        }}
+      >
+        <div style={{ fontSize: 12, letterSpacing: "0.14em", opacity: 0.7 }}>
+          {active.kicker}
+        </div>
+
+        <div
+          style={{
+            fontSize: isMobile ? 26 : 32,
+            fontWeight: 800,
+            letterSpacing: "-0.02em",
+            margin: "12px 0",
+          }}
+        >
+          {active.title}
+        </div>
+
+        <div style={{ fontSize: 16, lineHeight: 1.6, opacity: 0.85 }}>
+          {active.description}
+        </div>
+
+        <div style={{ marginTop: 24 }}>
+          <div style={{ fontSize: 14, fontWeight: 700, marginBottom: 10 }}>
+            Qué incluye
+          </div>
+          <ul style={{ paddingLeft: 18, opacity: 0.85, margin: 0 }}>
+            {active.deliverables.map((d, i) => (
+              <li key={i} style={{ marginBottom: 6 }}>
+                {d}
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div style={{ marginTop: 24 }}>
+          <ImpactBar label="Impacto en reservas" value={active.impact.reservas} accent={accent} />
+          <ImpactBar label="Impacto en marca" value={active.impact.marca} accent={accent} />
+          <ImpactBar label="Impacto en ventas" value={active.impact.ventas} accent={accent} />
+        </div>
+      </motion.div>
+    </section>
+  )
+}
